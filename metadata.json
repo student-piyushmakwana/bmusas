@@ -1,0 +1,5 @@
+{
+  "name": "Cloud SAS Studio",
+  "description": "A web-based SAS Studio simulator powered by Gemini. Write SAS code, execute it virtually, and view logs and HTML results instantly.",
+  "requestFramePermissions": []
+}

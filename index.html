@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>SAS Studio M3 Edition</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300..700&family=IBM+Plex+Mono:wght@400;500;600&family=JetBrains+Mono:wght@100..800&family=Roboto+Mono:wght@100..700&family=Source+Code+Pro:wght@200..900&family=Victor+Mono:wght@100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <style type="text/tailwindcss">
+        @layer base {
+          :root {
+            /* MD3 Light Tokens (RGB Channels) */
+            --md-sys-color-primary: 60 104 57;
+            --md-sys-color-surface-tint: 60 104 57;
+            --md-sys-color-on-primary: 255 255 255;
+            --md-sys-color-primary-container: 189 240 179;
+            --md-sys-color-on-primary-container: 36 80 35;
+            --md-sys-color-secondary: 83 99 79;
+            --md-sys-color-on-secondary: 255 255 255;
+            --md-sys-color-secondary-container: 214 232 206;
+            --md-sys-color-on-secondary-container: 59 75 56;
+            --md-sys-color-tertiary: 56 101 106;
+            --md-sys-color-on-tertiary: 255 255 255;
+            --md-sys-color-tertiary-container: 188 235 240;
+            --md-sys-color-on-tertiary-container: 30 77 82;
+            --md-sys-color-error: 186 26 26;
+            --md-sys-color-on-error: 255 255 255;
+            --md-sys-color-error-container: 255 218 214;
+            --md-sys-color-on-error-container: 147 0 10;
+            --md-sys-color-background: 247 251 241;
+            --md-sys-color-on-background: 25 29 23;
+            --md-sys-color-surface: 247 251 241;
+            --md-sys-color-on-surface: 25 29 23;
+            --md-sys-color-surface-variant: 222 229 216;
+            --md-sys-color-on-surface-variant: 66 73 64;
+            --md-sys-color-outline: 114 121 111;
+            --md-sys-color-outline-variant: 194 200 189;
+            --md-sys-color-shadow: 0 0 0;
+            --md-sys-color-scrim: 0 0 0;
+            --md-sys-color-inverse-surface: 45 50 43;
+            --md-sys-color-inverse-on-surface: 239 242 233;
+            --md-sys-color-inverse-primary: 162 211 153;
+            --md-sys-color-primary-fixed: 189 240 179;
+            --md-sys-color-on-primary-fixed: 0 34 3;
+            --md-sys-color-primary-fixed-dim: 162 211 153;
+            --md-sys-color-on-primary-fixed-variant: 36 80 35;
+            --md-sys-color-secondary-fixed: 214 232 206;
+            --md-sys-color-on-secondary-fixed: 17 31 15;
+            --md-sys-color-secondary-fixed-dim: 186 204 179;
+            --md-sys-color-on-secondary-fixed-variant: 59 75 56;
+            --md-sys-color-tertiary-fixed: 188 235 240;
+            --md-sys-color-on-tertiary-fixed: 0 32 34;
+            --md-sys-color-tertiary-fixed-dim: 160 207 212;
+            --md-sys-color-on-tertiary-fixed-variant: 30 77 82;
+            --md-sys-color-surface-dim: 216 219 210;
+            --md-sys-color-surface-bright: 247 251 241;
+            --md-sys-color-surface-container-lowest: 255 255 255;
+            --md-sys-color-surface-container-low: 241 245 235;
+            --md-sys-color-surface-container: 236 239 230;
+            --md-sys-color-surface-container-high: 230 233 224;
+            --md-sys-color-surface-container-highest: 224 228 219;
+
+            /* App Mapping */
+            --surface-1-light: var(--md-sys-color-surface);
+            --surface-2-light: var(--md-sys-color-surface-container);
+            --surface-3-light: var(--md-sys-color-surface-container-high);
+            --primary-light: var(--md-sys-color-primary);
+            --primary-container-light: var(--md-sys-color-primary-container);
+            --on-primary-container-light: var(--md-sys-color-on-primary-container);
+          }
+          
+          .dark {
+            /* MD3 Dark Tokens (RGB Channels) */
+            --md-sys-color-primary: 162 211 153;
+            --md-sys-color-surface-tint: 162 211 153;
+            --md-sys-color-on-primary: 11 57 14;
+            --md-sys-color-primary-container: 36 80 35;
+            --md-sys-color-on-primary-container: 189 240 179;
+            --md-sys-color-secondary: 186 204 179;
+            --md-sys-color-on-secondary: 37 52 35;
+            --md-sys-color-secondary-container: 59 75 56;
+            --md-sys-color-on-secondary-container: 214 232 206;
+            --md-sys-color-tertiary: 160 207 212;
+            --md-sys-color-on-tertiary: 0 54 59;
+            --md-sys-color-tertiary-container: 30 77 82;
+            --md-sys-color-on-tertiary-container: 188 235 240;
+            --md-sys-color-error: 255 180 171;
+            --md-sys-color-on-error: 105 0 5;
+            --md-sys-color-error-container: 147 0 10;
+            --md-sys-color-on-error-container: 255 218 214;
+            --md-sys-color-background: 16 20 15;
+            --md-sys-color-on-background: 224 228 219;
+            --md-sys-color-surface: 16 20 15;
+            --md-sys-color-on-surface: 224 228 219;
+            --md-sys-color-surface-variant: 66 73 64;
+            --md-sys-color-on-surface-variant: 194 200 189;
+            --md-sys-color-outline: 140 147 136;
+            --md-sys-color-outline-variant: 66 73 64;
+            --md-sys-color-shadow: 0 0 0;
+            --md-sys-color-scrim: 0 0 0;
+            --md-sys-color-inverse-surface: 224 228 219;
+            --md-sys-color-inverse-on-surface: 45 50 43;
+            --md-sys-color-inverse-primary: 60 104 57;
+            --md-sys-color-primary-fixed: 189 240 179;
+            --md-sys-color-on-primary-fixed: 0 34 3;
+            --md-sys-color-primary-fixed-dim: 162 211 153;
+            --md-sys-color-on-primary-fixed-variant: 36 80 35;
+            --md-sys-color-secondary-fixed: 214 232 206;
+            --md-sys-color-on-secondary-fixed: 17 31 15;
+            --md-sys-color-secondary-fixed-dim: 186 204 179;
+            --md-sys-color-on-secondary-fixed-variant: 59 75 56;
+            --md-sys-color-tertiary-fixed: 188 235 240;
+            --md-sys-color-on-tertiary-fixed: 0 32 34;
+            --md-sys-color-tertiary-fixed-dim: 160 207 212;
+            --md-sys-color-on-tertiary-fixed-variant: 30 77 82;
+            --md-sys-color-surface-dim: 16 20 15;
+            --md-sys-color-surface-bright: 54 58 52;
+            --md-sys-color-surface-container-lowest: 11 15 10;
+            --md-sys-color-surface-container-low: 25 29 23;
+            --md-sys-color-surface-container: 29 33 27;
+            --md-sys-color-surface-container-high: 39 43 37;
+            --md-sys-color-surface-container-highest: 50 54 48;
+            
+            /* App Mapping */
+            --surface-1-dark: var(--md-sys-color-surface);
+            --surface-2-dark: var(--md-sys-color-surface-container);
+            --surface-3-dark: var(--md-sys-color-surface-container-high);
+            --primary-dark: var(--md-sys-color-primary);
+            --primary-container-dark: var(--md-sys-color-primary-container);
+            --on-primary-container-dark: var(--md-sys-color-on-primary-container);
+          }
+        }
+        body {
+            font-family: 'Mukta', sans-serif;
+        }
+        /* Material Symbols Rounded settings */
+        .material-symbols-rounded {
+          font-variation-settings:
+          'FILL' 0,
+          'wght' 400,
+          'GRAD' 0,
+          'opsz' 24
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+        .dark ::-webkit-scrollbar-thumb {
+            background: #475569;
+        }
+        
+        /* SAS Results Styling */
+        .sas-results table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1rem;
+            font-size: 0.875rem;
+        }
+        .sas-results th {
+            background-color: rgb(var(--md-sys-color-surface-container-highest));
+            padding: 8px 12px;
+            text-align: left;
+            border-bottom: 2px solid rgb(var(--md-sys-color-outline-variant));
+            color: rgb(var(--md-sys-color-on-surface));
+            font-weight: 700;
+        }
+        .sas-results td {
+            padding: 8px 12px;
+            border-bottom: 1px solid rgb(var(--md-sys-color-surface-variant));
+            color: rgb(var(--md-sys-color-on-surface-variant));
+        }
+        .sas-results h1 { font-size: 1.5rem; font-weight: 700; color: rgb(var(--md-sys-color-primary)); margin: 1rem 0; }
+        .sas-results h2 { font-size: 1.25rem; font-weight: 600; color: rgb(var(--md-sys-color-on-surface)); margin: 0.75rem 0; }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: "rgb(var(--primary-light) / <alpha-value>)",
+                            dark: "rgb(var(--primary-dark) / <alpha-value>)"
+                        },
+                        "primary-container": {
+                            light: "rgb(var(--primary-container-light) / <alpha-value>)",
+                            dark: "rgb(var(--primary-container-dark) / <alpha-value>)"
+                        },
+                        "on-primary-container": {
+                            light: "rgb(var(--on-primary-container-light) / <alpha-value>)",
+                            dark: "rgb(var(--on-primary-container-dark) / <alpha-value>)"
+                        },
+                        surface: {
+                            1: { light: "rgb(var(--surface-1-light) / <alpha-value>)", dark: "rgb(var(--surface-1-dark) / <alpha-value>)" },
+                            2: { light: "rgb(var(--surface-2-light) / <alpha-value>)", dark: "rgb(var(--surface-2-dark) / <alpha-value>)" },
+                            3: { light: "rgb(var(--surface-3-light) / <alpha-value>)", dark: "rgb(var(--surface-3-dark) / <alpha-value>)" }
+                        }
+                    },
+                    fontFamily: {
+                        sans: ["Mukta", "sans-serif"],
+                        display: ["Mukta", "sans-serif"],
+                    },
+                    borderRadius: {
+                        lg: "1rem", // 16px
+                        xl: "1.25rem",
+                        '2xl': '1.5rem',
+                        '3xl': '2rem',
+                        '4xl': '2.5rem',
+                    },
+                    boxShadow: {
+                        'md': '0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05)',
+                        'lg': '0 10px 15px -3px rgb(0 0 0 / 0.05), 0 4px 6px -4px rgb(0 0 0 / 0.05)',
+                        'xl': '0 20px 25px -5px rgb(0 0 0 / 0.1), 0 10px 10px -5px rgb(0 0 0 / 0.04)',
+                    }
+                },
+            },
+        };
+    </script>
+    <script type="importmap">
+    {
+      "imports": {
+        "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+        "react/": "https://aistudiocdn.com/react@^19.2.0/",
+        "react": "https://aistudiocdn.com/react@^19.2.0",
+        "lucide-react": "https://aistudiocdn.com/lucide-react@^0.555.0",
+        "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0"
+      }
+    }
+    </script>
+</head>
+  <body class="bg-surface-1-light dark:bg-surface-1-dark text-slate-800 dark:text-slate-200 transition-colors duration-300">
+    <div id="root" class="h-screen flex flex-col overflow-hidden"></div>
+  </body>
+</html>
