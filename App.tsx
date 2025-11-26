@@ -57,6 +57,9 @@ const App: React.FC = () => {
   const [autoSaveEnabled, setAutoSaveEnabled] = useState(() => localStorage.getItem('sas_studio_autosave') === 'true');
   const [isVibeCodingEnabled, setIsVibeCodingEnabled] = useState(() => localStorage.getItem('sas_studio_vibe_coding') === 'true');
 
+  // Mobile Sidebar State
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+
   // Persist settings
   useEffect(() => localStorage.setItem('sas_studio_theme_mode', isDarkMode ? 'dark' : 'light'), [isDarkMode]);
   useEffect(() => localStorage.setItem('sas_studio_font_family', fontFamily), [fontFamily]);
@@ -232,6 +235,7 @@ const App: React.FC = () => {
     if (activeFileId && activeFileId !== file.id) updateFileContent(activeFileId, code);
     if (!openFiles.includes(file.id)) setOpenFiles(prev => [...prev, file.id]);
     setActiveFileId(file.id);
+    if (window.innerWidth < 768) setIsSidebarOpen(false); // Close sidebar on mobile select
   }, [activeFileId, code, openFiles]);
 
   const handleTabClick = (fileId: string) => {
@@ -321,23 +325,30 @@ const App: React.FC = () => {
         onRedo={handleRedo}
         onOpenSettings={() => setIsSettingsOpen(true)}
         onProfileClick={() => setIsProfileDialogOpen(true)}
+        onMenuClick={() => setIsSidebarOpen(true)}
         canUndo={undoStack.length > 0}
         canRedo={redoStack.length > 0}
         isDarkMode={isDarkMode}
         toggleTheme={toggleTheme}
       />
       
-      <div className="flex flex-1 overflow-hidden">
-        <Sidebar files={files} onFileSelect={handleFileSelect} selectedFileId={activeFileId} />
+      <div className="flex flex-1 overflow-hidden relative">
+        <Sidebar 
+            files={files} 
+            onFileSelect={handleFileSelect} 
+            selectedFileId={activeFileId} 
+            isOpen={isSidebarOpen}
+            onClose={() => setIsSidebarOpen(false)}
+        />
         
-        <main className="flex-grow flex flex-col p-4 bg-surface-1-light dark:bg-surface-1-dark min-w-0">
+        <main className="flex-grow flex flex-col p-2 sm:p-4 bg-surface-1-light dark:bg-surface-1-dark min-w-0 transition-all duration-300">
             {openFiles.length > 0 ? (
                 <div 
                     ref={contentRef}
                     className="flex-grow flex flex-col bg-surface-3-light dark:bg-surface-3-dark rounded-xl shadow-md overflow-hidden border border-slate-200 dark:border-slate-800 relative"
                 >
                     {/* File Tabs */}
-                    <div className="flex border-b border-slate-300 dark:border-slate-700/80 bg-surface-2-light dark:bg-surface-2-dark overflow-x-auto">
+                    <div className="flex border-b border-slate-300 dark:border-slate-700/80 bg-surface-2-light dark:bg-surface-2-dark overflow-x-auto no-scrollbar">
                         {openFiles.map(fileId => {
                             const fileNode = findFile(files, fileId);
                             if (!fileNode) return null;
@@ -398,14 +409,14 @@ const App: React.FC = () => {
 
                     {/* Vibe Coding Bar (Floating) */}
                     {isVibeCodingEnabled && (
-                        <div className="absolute bottom-[60px] left-1/2 transform -translate-x-1/2 w-[90%] max-w-2xl z-30">
+                        <div className="absolute bottom-[60px] sm:bottom-[70px] left-1/2 transform -translate-x-1/2 w-[95%] sm:w-[90%] max-w-2xl z-30">
                             <div className={`
                                 bg-white dark:bg-zinc-900/90 backdrop-blur-md rounded-[2rem] shadow-xl border border-slate-100 dark:border-slate-700/50
-                                flex items-center p-2 pl-3 transition-all duration-300
+                                flex items-center p-1.5 sm:p-2 pl-2 sm:pl-3 transition-all duration-300
                                 ${isGenerating ? 'ring-2 ring-blue-400 dark:ring-blue-500' : 'hover:shadow-2xl'}
                             `}>
-                                <div className="w-10 h-10 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 shrink-0">
-                                    <span className={`material-symbols-rounded text-xl ${isGenerating ? 'animate-spin' : ''}`}>
+                                <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900/40 text-blue-600 dark:text-blue-300 shrink-0">
+                                    <span className={`material-symbols-rounded text-lg sm:text-xl ${isGenerating ? 'animate-spin' : ''}`}>
                                         {isGenerating ? 'refresh' : 'auto_awesome'}
                                     </span>
                                 </div>
@@ -416,21 +427,21 @@ const App: React.FC = () => {
                                     onKeyDown={(e) => e.key === 'Enter' && handleVibeGenerate()}
                                     disabled={isGenerating}
                                     placeholder='provide me an context or automatically code generate'
-                                    className="flex-1 bg-transparent border-none outline-none px-4 text-[15px] text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 h-10 font-medium"
+                                    className="flex-1 bg-transparent border-none outline-none px-2 sm:px-4 text-xs sm:text-[15px] text-slate-700 dark:text-slate-200 placeholder-slate-400 dark:placeholder-slate-500 h-10 font-medium"
                                 />
                                 <button 
                                     onClick={handleVibeGenerate}
                                     disabled={!vibePrompt.trim() || isGenerating}
-                                    className="w-10 h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 disabled:opacity-50 transition-colors"
+                                    className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center rounded-full hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-500 dark:text-slate-400 disabled:opacity-50 transition-colors"
                                 >
-                                    <span className="material-symbols-rounded text-xl">arrow_upward</span>
+                                    <span className="material-symbols-rounded text-lg sm:text-xl">arrow_upward</span>
                                 </button>
                             </div>
                         </div>
                     )}
 
                     {/* Bottom Tabs */}
-                    <div className="flex border-t border-slate-300 dark:border-slate-700/80 bg-surface-2-light dark:bg-surface-2-dark">
+                    <div className="flex border-t border-slate-300 dark:border-slate-700/80 bg-surface-2-light dark:bg-surface-2-dark overflow-x-auto no-scrollbar">
                         {[
                             { id: TabType.LOG, label: 'Log', icon: 'code' },
                             { id: TabType.RESULTS, label: 'Results', icon: 'assessment' },
@@ -440,7 +451,7 @@ const App: React.FC = () => {
                                 key={tab.id}
                                 onClick={() => setActiveBottomTab(tab.id)}
                                 className={`
-                                    flex items-center gap-2 py-3 px-6 border-b-2 text-sm transition-colors
+                                    flex items-center gap-2 py-3 px-4 sm:px-6 border-b-2 text-sm transition-colors whitespace-nowrap
                                     ${activeBottomTab === tab.id
                                         ? 'border-primary-light dark:border-primary-dark text-primary-light dark:text-primary-dark font-bold bg-primary-container-light/30 dark:bg-primary-container-dark/30'
                                         : 'border-transparent text-slate-500 dark:text-slate-400 hover:bg-slate-300/40 dark:hover:bg-slate-800/50'
@@ -454,7 +465,7 @@ const App: React.FC = () => {
                     </div>
                 </div>
             ) : (
-                <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500 bg-surface-3-light dark:bg-surface-3-dark rounded-xl border border-slate-200 dark:border-slate-800">
+                <div className="flex flex-col items-center justify-center h-full text-slate-400 dark:text-slate-500 bg-surface-3-light dark:bg-surface-3-dark rounded-xl border border-slate-200 dark:border-slate-800 p-6 text-center">
                     <span className="material-symbols-rounded text-6xl mb-4 opacity-20">grid_view</span>
                     <h2 className="text-xl font-bold text-slate-600 dark:text-slate-300">No Program Open</h2>
                     <p className="mt-2 text-sm">Select a file from the explorer or create a new one.</p>
@@ -469,7 +480,7 @@ const App: React.FC = () => {
             <div className={`w-2.5 h-2.5 rounded-full ${isRunning ? 'bg-primary-light animate-pulse' : 'bg-green-500'}`}></div>
             <span>{isRunning ? 'Running...' : 'Ready'}</span>
         </div>
-        <div className="flex items-center gap-4 font-mono">
+        <div className="hidden sm:flex items-center gap-4 font-mono">
              <span>Ln {code.split('\n').length}, Col 1</span>
              <span>UTF-8</span>
              <span>SAS 9.4</span>
@@ -478,7 +489,7 @@ const App: React.FC = () => {
 
       {/* New Program Dialog */}
       {isNewFileDialogOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
            <div className="w-full max-w-[440px] bg-surface-3-light dark:bg-surface-3-dark rounded-3xl p-8 shadow-2xl flex flex-col">
                <h2 className="text-2xl font-normal text-slate-900 dark:text-slate-100 mb-8">New Program</h2>
                
@@ -517,7 +528,7 @@ const App: React.FC = () => {
       
       {/* Settings Dialog */}
       {isSettingsOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
            {/* Container */}
            <div className="w-full max-w-lg rounded-3xl bg-surface-3-light dark:bg-surface-3-dark shadow-2xl p-6 sm:p-8 max-h-[90vh] overflow-y-auto">
                
@@ -632,7 +643,7 @@ const App: React.FC = () => {
 
       {/* Profile/About Dialog */}
       {isProfileDialogOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
+        <div className="fixed inset-0 z-[60] flex items-center justify-center bg-black/40 backdrop-blur-sm p-4">
            <div className="w-full max-w-sm bg-surface-3-light dark:bg-surface-3-dark rounded-3xl p-6 shadow-2xl flex flex-col items-center text-center relative animate-[fadeIn_0.2s_ease-out]">
                <button 
                   onClick={() => setIsProfileDialogOpen(false)}

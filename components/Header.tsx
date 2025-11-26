@@ -8,6 +8,7 @@ interface HeaderProps {
   onRedo: () => void;
   onOpenSettings: () => void;
   onProfileClick: () => void;
+  onMenuClick: () => void;
   canUndo: boolean;
   canRedo: boolean;
   isRunning: boolean;
@@ -23,6 +24,7 @@ export const Header: React.FC<HeaderProps> = ({
     onRedo, 
     onOpenSettings,
     onProfileClick,
+    onMenuClick,
     canUndo, 
     canRedo,
     isRunning, 
@@ -30,63 +32,73 @@ export const Header: React.FC<HeaderProps> = ({
     toggleTheme 
 }) => {
   return (
-    <header className="flex items-center justify-between py-2 px-4 border-b border-slate-200 dark:border-slate-800 shrink-0 bg-surface-1-light dark:bg-surface-1-dark transition-colors">
-        <div className="flex items-center gap-4">
-            <div className="w-10 h-10 bg-primary-container-light dark:bg-primary-container-dark text-on-primary-container-light dark:text-on-primary-container-dark rounded-full flex items-center justify-center">
-                <span className="material-symbols-rounded">grid_view</span>
+    <header className="flex items-center justify-between py-2 px-3 sm:px-4 border-b border-slate-200 dark:border-slate-800 shrink-0 bg-surface-1-light dark:bg-surface-1-dark transition-colors relative z-20">
+        <div className="flex items-center gap-2 sm:gap-4">
+            <button 
+                onClick={onMenuClick}
+                className="p-2 -ml-2 rounded-full text-slate-500 dark:text-slate-400 hover:bg-slate-200 dark:hover:bg-slate-800 md:hidden focus:outline-none"
+            >
+                <span className="material-symbols-rounded text-2xl">menu</span>
+            </button>
+
+            <div className="w-8 h-8 sm:w-10 sm:h-10 bg-primary-container-light dark:bg-primary-container-dark text-on-primary-container-light dark:text-on-primary-container-dark rounded-full flex items-center justify-center shrink-0">
+                <span className="material-symbols-rounded text-lg sm:text-xl">grid_view</span>
             </div>
-            <div>
-                <h1 className="font-bold text-lg text-slate-900 dark:text-slate-50 leading-tight">SAS Studio</h1>
-                <p className="text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider -mt-0.5">M3 EDITION</p>
+            <div className="hidden xs:block">
+                <h1 className="font-bold text-base sm:text-lg text-slate-900 dark:text-slate-50 leading-tight">SAS Studio</h1>
+                <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-medium tracking-wider -mt-0.5">M3 EDITION</p>
             </div>
-            <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-2 hidden sm:block"></div>
+            
+            <div className="h-8 w-px bg-slate-200 dark:bg-slate-700 mx-1 sm:mx-2 hidden sm:block"></div>
             
             <div className="flex items-center gap-1">
                 <button 
                     onClick={onNewProgram}
-                    className="flex items-center gap-2 text-sm font-bold px-4 py-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200 transition-colors"
+                    className="flex items-center gap-2 text-sm font-bold p-2 sm:px-4 sm:py-2 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-800/60 text-slate-700 dark:text-slate-200 transition-colors"
+                    title="New Program"
                 >
                     <span className="material-symbols-rounded text-xl text-slate-600 dark:text-slate-300">add</span>
-                    New
+                    <span className="hidden sm:inline">New</span>
                 </button>
                 <button 
                     onClick={onSave}
-                    className="p-2.5 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 transition-colors"
+                    className="p-2 sm:p-2.5 rounded-full hover:bg-slate-200/60 dark:hover:bg-slate-800/60 text-slate-600 dark:text-slate-300 transition-colors"
                     title="Save"
                 >
-                    <span className="material-symbols-rounded">save</span>
+                    <span className="material-symbols-rounded text-xl">save</span>
                 </button>
                 <button 
                     onClick={onRun}
                     disabled={isRunning}
                     className={`
-                        font-bold text-sm px-5 py-2 rounded-full flex items-center gap-2 transition-all ml-2
+                        font-bold text-sm p-2 sm:px-5 sm:py-2 rounded-full flex items-center gap-2 transition-all ml-1 sm:ml-2
                         ${isRunning 
                             ? 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500 cursor-not-allowed' 
                             : 'bg-primary-light dark:bg-primary-dark text-white dark:text-slate-900 hover:opacity-90 shadow-sm'
                         }
                     `}
+                    title="Run Code"
                 >
-                    <span className={`material-symbols-rounded text-lg ${isRunning ? 'animate-spin' : ''}`}>
+                    <span className={`material-symbols-rounded text-xl sm:text-lg ${isRunning ? 'animate-spin' : ''}`}>
                         {isRunning ? 'refresh' : 'play_arrow'}
                     </span>
-                    {isRunning ? 'Running' : 'Run'}
+                    <span className="hidden sm:inline">{isRunning ? 'Running' : 'Run'}</span>
                 </button>
             </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
             <button 
                 onClick={toggleTheme}
-                className="text-slate-500 dark:text-slate-400 p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
+                className="text-slate-500 dark:text-slate-400 p-2 sm:p-2.5 rounded-full hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors"
                 title={isDarkMode ? "Light Mode" : "Dark Mode"}
             >
-                <span className="material-symbols-rounded">
+                <span className="material-symbols-rounded text-xl">
                     {isDarkMode ? 'light_mode' : 'dark_mode'}
                 </span>
             </button>
             
-            <div className="flex items-center bg-surface-2-light dark:bg-surface-2-dark rounded-full hidden sm:flex">
+            <div className="flex items-center bg-surface-2-light dark:bg-surface-2-dark rounded-full hidden md:flex">
                 <button 
                     onClick={onUndo}
                     disabled={!canUndo}
@@ -125,11 +137,11 @@ export const Header: React.FC<HeaderProps> = ({
             
             <button 
                 onClick={onProfileClick}
-                className="ml-2 focus:outline-none rounded-full transition-transform active:scale-95"
+                className="ml-1 sm:ml-2 focus:outline-none rounded-full transition-transform active:scale-95"
             >
                 <img 
                     alt="User avatar" 
-                    className="w-10 h-10 rounded-full object-cover border-2 border-slate-100 dark:border-slate-800 hover:border-primary-light dark:hover:border-primary-dark transition-colors" 
+                    className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-slate-100 dark:border-slate-800 hover:border-primary-light dark:hover:border-primary-dark transition-colors" 
                     src="https://i.pinimg.com/564x/24/38/64/243864d44e26eb18dd1f0664aac4f7b2.jpg"
                 />
             </button>
